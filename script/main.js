@@ -127,6 +127,8 @@ addButton.addEventListener('click', function () {
     clearForm();
 });
 
+
+
 clearTableBtn.addEventListener('click', function () {
     cars = [];
     editingIndex = null;
@@ -136,3 +138,12 @@ clearTableBtn.addEventListener('click', function () {
 });
 
 renderTable();
+
+const darkModeBtn = document.getElementById('darkModeBtn');
+if (darkModeBtn) {
+  darkModeBtn.addEventListener('click', () => {
+    document.body.classList.toggle('dark-mode');
+  });
+}
+
+
