@@ -1,4 +1,3 @@
-// ===== Model classes (global) =====
 class Car {
   constructor(name, year, price) {
     this.name = name;
@@ -20,7 +19,6 @@ class CarModel extends Car {
   }
 }
 
-// Factory kept close to your original
 function createCar(name, year, price, model) {
   return new CarModel(name, year, price, model);
 }

@@ -16,7 +16,6 @@ fetch('navbar.html')
     noflicker.style.visibility = 'visible';
   });
 
-
 document.addEventListener("DOMContentLoaded", function() {
   fetch('navbar.html')
     .then(response => response.text())

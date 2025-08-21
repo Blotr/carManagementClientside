@@ -127,8 +127,6 @@ addButton.addEventListener('click', function () {
     clearForm();
 });
 
-
-
 clearTableBtn.addEventListener('click', function () {
     cars = [];
     editingIndex = null;

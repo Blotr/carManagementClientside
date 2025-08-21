@@ -11,10 +11,7 @@
   color: #007bff;
 }
 
-/* Base surfaces */
 .dark-mode, .dark-mode body { background-color: #121212; color: #e6e6e6; }
-
-/* Navbar overrides */
 .dark-mode .navbar { background-color: #1b1b1b !important; border-bottom: 1px solid #2a2a2a; }
 .dark-mode .navbar .navbar-brand,
 .dark-mode .navbar .nav-link,
@@ -22,8 +19,6 @@
 .dark-mode .navbar .nav-link.active,
 .dark-mode .navbar .nav-link:focus,
 .dark-mode .navbar .nav-link:hover { color: #ffffff !important; }
-
-/* Buttons/inputs if you use them */
 .dark-mode .btn { background-color: #2a2a2a; color: #e6e6e6; border-color: #3a3a3a; }
 .dark-mode .form-control,
 .dark-mode .table { background-color: #1a1a1a; color: #e6e6e6; border-color: #2a2a2a; }

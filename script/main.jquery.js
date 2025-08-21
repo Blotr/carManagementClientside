@@ -1,6 +1,3 @@
-// jQuery version of car management
-// Requires: jQuery, car.js (for createCar and classes)
-
 (function ($) {
   $(function () {
     const $name = $('#carName');
@@ -11,7 +8,6 @@
     const $clearBtn = $('#clearTableBtn');
     const $tbody = $('#carTableBody');
 
-    // If the page doesn't have the car table, do nothing
     if ($tbody.length === 0) return;
 
     const regexName = /^[A-Za-z\s]{2,}$/;
@@ -104,7 +100,6 @@
       renderTable();
     }
 
-    // Handlers
     $addBtn.on('click', function () {
       const data = readForm();
       if (!validateInputs(data)) return;
@@ -131,7 +126,6 @@
       renderTable();
     });
 
-    // Delegated events for dynamic buttons
     $tbody.on('click', '.edit-btn', function () {
       const index = Number($(this).data('index'));
       startEdit(index);
@@ -142,7 +136,6 @@
       deleteRow(index);
     });
 
-    // Initial render
     renderTable();
   });
 })(jQuery);
