@@ -1,3 +1,5 @@
+const API_BASE = "http://localhost:3000/api/cars";
+
 const addButton      = document.getElementById('addCarBtn');
 const clearTableBtn  = document.getElementById('clearTableBtn');
 const tableBody      = document.getElementById('carTableBody');
@@ -14,6 +16,24 @@ const regexModel = /^[A-Za-z0-9\- ]+$/;
 
 let cars = [];
 let editingIndex = null;
+let editingId = null;
+
+async function loadCars() {
+    try {
+        const response = await fetch(API_BASE);
+        if (!response.ok) throw new Error('Network response was not ok');
+        const data = await response.json();
+        cars = data.map(car => {
+            const carObj = createCar(car.name, car.year, car.price, car.model);
+            carObj.id = car.id;
+            return carObj;
+        });
+        renderTable();
+    } catch (error) {
+        alert('Failed to load cars from server.');
+    }
+    
+}
 
 function readForm() {
     return {
@@ -89,43 +109,71 @@ function renderTable() {
 }
 
 function startEdit(index) {
-    const car = cars[index];
-    nameEl.value  = car.name;
-    yearEl.value  = car.year;
-    priceEl.value = car.price;
-    modelEl.value = car.model;
+  const car = cars[index];
+  nameEl.value  = car.name;
+  yearEl.value  = car.year;
+  priceEl.value = car.price;
+  modelEl.value = car.model;
 
-    editingIndex = index;
-    addButton.textContent = 'Save';
+  editingIndex = index;
+  editingId = car.id;
+  addButton.textContent = 'Save';
 }
 
-function deleteRow(index) {
-    if (editingIndex === index) {
-        editingIndex = null;
-        addButton.textContent = 'Add';
-        clearForm();
+async function deleteRow(index) {
+    try {
+        await fetch(`${API_BASE}/${cars[index].id}`, { method: 'DELETE' });
+        if (editingIndex === index) {
+            editingIndex = null;
+            addButton.textContent = 'Add';
+            clearForm();
+        }
+    } catch (error) {
+        alert('Failed to delete car from server.');
     }
+
     cars.splice(index, 1);
     renderTable();
-}
-
-addButton.addEventListener('click', function () {
-    const data = readForm();
-    if (!validateInputs(data)) return;
-
-    const car = createCar(data.name, data.year, data.price, data.model);
-
-    if (editingIndex === null) {
-        cars.push(car);
-    } else {
-        cars[editingIndex] = car;
-        editingIndex = null;
-        addButton.textContent = 'Add';
     }
 
-    renderTable();
-    clearForm();
+
+addButton.addEventListener('click', async function () {
+  const data = readForm();
+  if (!validateInputs(data)) return;
+                                                                                      
+  const payload = {
+    name:  data.name,
+    year:  Number(data.year),
+    price: Number(data.price),
+    model: data.model
+  };
+
+    if (editingId !== null) {
+        // UPDATE (PUT)
+        console.log('PUT payload:', payload);
+        console.log('DB NAME', DB_NAME);
+        await fetch(`${API_BASE}/${editingId}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+  } else {
+    // CREATE (POST)
+    await fetch(`${API_BASE}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+  }
+
+  await loadCars();
+  clearForm();
+  addButton.textContent = 'Add';
+  editingIndex = null;
+  editingId = null;
 });
+
+
 
 clearTableBtn.addEventListener('click', function () {
     cars = [];
@@ -135,4 +183,4 @@ clearTableBtn.addEventListener('click', function () {
     renderTable();
 });
 
-renderTable();
+loadCars();
