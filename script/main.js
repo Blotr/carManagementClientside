@@ -151,7 +151,6 @@ addButton.addEventListener('click', async function () {
     if (editingId !== null) {
         // UPDATE (PUT)
         console.log('PUT payload:', payload);
-        console.log('DB NAME', DB_NAME);
         await fetch(`${API_BASE}/${editingId}`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
